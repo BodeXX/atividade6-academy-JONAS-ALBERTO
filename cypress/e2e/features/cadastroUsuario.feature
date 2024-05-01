@@ -14,7 +14,6 @@ Cenário: Não deve ser possível cadastrar um usuário apenas com o e-mail
   E confirmar a operação
   Então o usuário não será registrado na lista
 
-
 Cenário: Não deve ser possível cadastrar um e-mail com mais de 60 caracteres
   Dado que acessei a funcionalidade de cadastro
   Quando informar um novo nome
