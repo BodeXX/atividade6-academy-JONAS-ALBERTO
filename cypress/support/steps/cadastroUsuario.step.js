@@ -22,6 +22,34 @@ When('confirmar a operação', function () {
   paginaCadastro.clickButtonCadastrar();
 });
 
+When('informar o e-mail {string}', function (email) {
+  paginaCadastro.typeEmail(email);
+});
+
+When(
+  'informar um e-mail com mais de {int} caracteres {string}',
+  function (tamanho, email) {
+    paginaCadastro.typeEmail(email);
+  }
+);
+
+When('informar um novo nome e email', function (tabela) {
+  const dados = tabela.rowsHash();
+  cy.log(dados);
+  paginaCadastro.typeEmail(dados.email);
+});
+
+When('informar o nome {string}', function (nome) {
+  paginaCadastro.typeNome(nome);
+});
+
+Then(
+  'não será possível concluir a tentativa de cadastro do usuário',
+  function () {
+    paginaCadastro.getListaUsuarios().should('be.empty');
+  }
+);
+
 Then('o usuário será registrado na lista', function () {
   cy.get('@emailFaker').then((email) => {
     paginaCadastro.getListaUsuarios().should('contain', email);
@@ -32,3 +60,14 @@ Then('o usuário não será registrado na lista', function () {
   cy.wait('@postUsuario');
   paginaCadastro.getListaUsuarios().should('be.empty');
 });
+
+Then(
+  'não deve ser possível extrapolar o limite de {int} caracteres do e-mail no cadastro',
+  function (tamanhoMaximo) {
+    cy.get(paginaCadastro.inputEmail)
+      .invoke('val')
+      .then((emailDigitado) => {
+        expect(emailDigitado.length).to.equal(tamanhoMaximo);
+      });
+  }
+);
