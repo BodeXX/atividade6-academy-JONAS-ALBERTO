@@ -1,7 +1,41 @@
-import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps';
+import {
+  Given,
+  When,
+  Then,
+  Before,
+  After,
+} from 'cypress-cucumber-preprocessor/steps';
 import { faker } from '@faker-js/faker';
 import CadastroPage from '../pages/cadastro.page';
 const paginaCadastro = new CadastroPage();
+
+before(() => {
+  cy.log('Executou o hook do mocha');
+});
+
+beforeEach(() => {
+  cy.log('Executou o beforeEach do Mocha');
+});
+
+after(() => {
+  cy.log('Executou o after do Mocha');
+});
+
+Before(() => {
+  cy.log('... executou o hook before');
+});
+
+Before({ tags: '@erroCadastro' }, () => {
+  cy.log('.. executou o hook');
+});
+
+After(() => {
+  cy.log('...Executou o after depois do teste.');
+});
+
+After({ tags: '@cadastroUsuario' }, () => {
+  cy.log('... executou o hook após um cenário com a tag @cadastroUsuario.');
+});
 
 Given('que acessei a funcionalidade de cadastro', function () {
   cy.visit('./app/index.html');
