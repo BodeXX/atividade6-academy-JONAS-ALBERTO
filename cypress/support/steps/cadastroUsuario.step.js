@@ -4,24 +4,25 @@ import {
   Then,
   Before,
   After,
-} from 'cypress-cucumber-preprocessor/steps';
+} from '@badeball/cypress-cucumber-preprocessor';
 import { faker } from '@faker-js/faker';
 import CadastroPage from '../pages/cadastro.page';
 const paginaCadastro = new CadastroPage();
 
-before(() => {
-  cy.log('Executou o hook do mocha');
-});
+// hooks do Mocha possuem a letra minuscula
+// before(() => {
+//   cy.log('Executou o hook do mocha');
+// });
 
-beforeEach(() => {
-  cy.log('Executou o beforeEach do Mocha');
-});
+// beforeEach(() => {
+//   cy.log('Executou o beforeEach do Mocha');
+// });
 
-after(() => {
-  cy.log('Executou o after do Mocha');
-});
+// after(() => {
+//   cy.log('Executou o after do Mocha');
+// });
 
-Before(() => {
+Before({ tags: '@cadastroUsuario' }, () => {
   cy.log('... executou o hook before');
 });
 
@@ -29,15 +30,11 @@ Before({ tags: '@erroCadastro' }, () => {
   cy.log('.. executou o hook');
 });
 
-After(() => {
-  cy.log('...Executou o after depois do teste.');
-});
-
 After({ tags: '@cadastroUsuario' }, () => {
   cy.log('... executou o hook após um cenário com a tag @cadastroUsuario.');
 });
 
-Given('que acessei a funcionalidade de cadastro', function () {
+Given('que acessei o sistema', function () {
   cy.visit('./app/index.html');
 });
 
@@ -105,3 +102,26 @@ Then(
       });
   }
 );
+
+Before({ tags: '@emailJaCadastrado' }, () => {
+  const email = faker.internet.email();
+  cy.wrap(email).as('emailJaCadastrado');
+  cy.request(
+    'POST',
+    'https://rarocrud-80bf38b38f1f.herokuapp.com/api/v1/users',
+    {
+      name: faker.person.fullName(),
+      email,
+    }
+  );
+});
+
+When('informar um e-mail já utilizado', function () {
+  cy.get('@emailJaCadastrado').then((email) => {
+    paginaCadastro.typeEmail(email);
+  });
+});
+
+Then('devo visualizar uma mensagem de erro', () => {
+  //
+});

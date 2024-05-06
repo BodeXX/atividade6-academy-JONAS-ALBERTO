@@ -1,17 +1,18 @@
 # language: pt
+@cadastroUsuario
 Funcionalidade: Cadastro de usuário
 
-Contexto: Usuário deve ter acessado a funcionalidade de cadastro
-  Dado que acessei a funcionalidade de cadastro
+Contexto: Usuário deve ter acessado o sistema
+  Dado que acessei o sistema
 
-@cadastroUsuario
+@ignore
 Cenário: Cadastro de usuário com sucesso
   Quando informar um novo nome
   E informar um novo e-mail
   E confirmar a operação
   Então o usuário será registrado na lista
 
-@erroCadastro
+@erroCadastro @ignore
 Cenário: Não deve ser possível cadastrar um usuário apenas com o e-mail
   Quando informar um novo e-mail
   E confirmar a operação
@@ -31,7 +32,7 @@ Cenário: Não deve ser possível cadastrar um usuário com nome vazio e e-mail 
   E confirmar a operação
   Então o usuário não será registrado na lista
 
-@cadastro @smoke @ignore
+@smoke @ignore
 Cenário: Não deve ser possível cadastrar um usuário com e-mail em formato inválido
   Quando informar um novo nome
   E informar o e-mail "iury@teste"
@@ -53,3 +54,9 @@ Esquema do Cenário: Não deve ser feita uma tentativa de cadastro se os dados d
     | .@    | Gustavo |
 
 # todo cenário de e-mail já cadastrado
+@emailJaCadastrado
+Cenário: Não deve ser possível cadastrar um usuário com e-mail já cadastrado
+  Quando informar um novo nome
+  E informar um e-mail já utilizado
+  E confirmar a operação
+  Então devo visualizar uma mensagem de erro
