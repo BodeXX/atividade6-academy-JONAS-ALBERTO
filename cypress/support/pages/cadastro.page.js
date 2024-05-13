@@ -1,37 +1,24 @@
 export default class CadastroPage {
-  inputNome = '#name';
-  inputEmail = '#email';
-  buttonLimpar = '[data-test-id="clearButton"]';
-  buttonCadastrar = 'button[type="submit"]';
-
-  linkPaginaUsuarios = '[href="./usuarios.html"]';
-  linkPaginaSobre = '[href="./sobre.html"]';
-
-  listaUsuarios = '#lista-usuarios';
+  nomeInput = '#name';
+  emailInput = '#email';
+  buttonSalvar = "[type='submit']";
+  
 
   typeNome(nome) {
-    cy.get(this.inputNome).type(nome);
+    cy.get(this.nomeInput).type(nome);
   }
 
   typeEmail(email) {
-    cy.get(this.inputEmail).type(email);
+    cy.get(this.emailInput).type(email);
   }
 
-  clickButtonCadastrar() {
-    cy.get(this.buttonCadastrar).click();
+  clickSalvar() {
+    cy.contains("Salvar").click();
   }
 
-  clickButtonLimpar() {
-    cy.get(this.buttonLimpar).click();
+  typeCadastro(nome, email) {
+    cy.get(this.nomeInput).type(nome);
+    cy.get(this.emailInput).type(email);
+    cy.contains("Salvar").click();
   }
-
-  getListaUsuarios() {
-    return cy.get(this.listaUsuarios);
-  }
-
-  cadastrar(nome, email) {
-    this.typeNome(nome);
-    this.typeEmail(email);
-    this.clickButtonCadastrar();
-  }
-}
+};
